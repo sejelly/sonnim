@@ -1,7 +1,6 @@
 package com.example.sonnim.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,6 +8,10 @@ import javax.persistence.*;
 @Table
 @Getter
 @Setter
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
