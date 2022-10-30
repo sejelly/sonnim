@@ -3,10 +3,7 @@ package com.example.sonnim.controller;
 import com.example.sonnim.entity.Visit;
 import com.example.sonnim.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,13 +40,13 @@ public class VisitController {
         }
     }
 
-    @GetMapping("insert")
-    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "age") int age) {//Integer과 int 비교
+    @PostMapping("insert")
+    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect) {//Integer과 int 비교
 
          {
-            Visit visit = Visit.builder().imgPath(img_path).age(age).build();
+            Visit visit = Visit.builder().imgPath(img_path).suspect(suspect).build();
             visitRepository.save(visit);
-            return "이미지: " +img_path+ " 나이 : " + age + "으로 추가 되었습니다";
+            return "이미지: " +img_path+ " suspect : " + suspect + "으로 추가 되었습니다";
         }
     }
 
