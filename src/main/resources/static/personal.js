@@ -38,4 +38,5 @@ async function uploadFile() {
   if (res.status == 200) {
     alert("db successfully uploaded.");
   }
+  console.log(fileupload.files[0])
 }
