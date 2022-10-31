@@ -35,7 +35,8 @@ function makeDivToImageFile(captureDiv) {
         scale: 1
     }).then(function (canvas) {
         const imageURL = canvas.toDataURL('image/jpeg');
-        saveAs(imageURL, 'new file.jpg');
+        // saveAs(imageURL, 'new file.jpg');
+        console.log(imageURL);
     }).catch(function (err) {
         console.log(err);
     });
