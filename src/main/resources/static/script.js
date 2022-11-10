@@ -40,6 +40,7 @@ function loadLabeledImages() {
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
+
       var path = window.location.pathname;
       console.log
       for (let i = 1; i <= 2; i++) {
