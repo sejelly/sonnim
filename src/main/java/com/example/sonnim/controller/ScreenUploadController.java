@@ -34,7 +34,7 @@ public class ScreenUploadController {
             binaryData = binaryData.replaceAll("data:image/jpg;base64,", "");
             byte[] file = Base64.decodeBase64(binaryData);
             String fileName=  request.getParameter("fileName");
-            stream = new FileOutputStream("/Users/gimjunseo/Downloads/"+fileName+".jpg");
+            stream = new FileOutputStream("C:\\capture\\"+fileName+".jpg");
             stream.write(file);
             stream.close();
             System.out.println("캡처 저장");

@@ -25,7 +25,7 @@ async function sreenShot() {
             var minutes = ('0' + today.getMinutes()).slice(-2);
             var seconds = ('0' + today.getSeconds()).slice(-2);
             var timeString = hours + '_' + minutes  + '_' + seconds;
-			const result = await $.ajax({
+			const result = $.ajax({
 				type : "POST",
 				data : {
 					"imgSrc" : myImg,

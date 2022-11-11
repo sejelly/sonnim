@@ -23,7 +23,7 @@ async function uploadFile() {
   });
 
 
-    let path = "C:__Users_sejelly__OneDrive__Desktop__imgSonnim__" + fileupload.files[0].name;
+    let path = "C:__capture__" + fileupload.files[0].name;
     console.log(path);
     let res = await fetch('/visit/insert?img_path='+path+'&suspect=true', {
       method: "POST",

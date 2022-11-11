@@ -21,7 +21,7 @@ public class FileUploadController {
 
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo( new File("C:\\Users\\sejelly\\sonnim\\sonnim\\src\\main\\resources\\static\\" + fileName));
+            file.transferTo( new File("C:\\capture\\" + fileName));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
