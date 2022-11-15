@@ -25,7 +25,7 @@ async function sreenShot() {
             var minutes = ('0' + today.getMinutes()).slice(-2);
             var seconds = ('0' + today.getSeconds()).slice(-2);
             var timeString = hours + '_' + minutes  + '_' + seconds;
-			const result = $.ajax({
+			const {result, item} =  new Promise((resolve,reject)=>$.ajax({
 				type : "POST",
 				data : {
 					"imgSrc" : myImg,
@@ -33,7 +33,8 @@ async function sreenShot() {
 				},
 				dataType : "text",
 				url : "/ImgSaveTest.do",
-			});
+			})
+        )
 			return result;
 		});
 
@@ -70,8 +71,11 @@ async function start() {
   console.log('Loaded')
   captureBtn.addEventListener('click', async () => {
     takePhoto()
-    await sreenShot()
-    image = await faceapi.fetchImage(nameVideo())
+    const token=await sreenShot()
+      console.log(token)
+
+    image = await faceapi.fetchImage(lastImgName)
+      lastImgName=nameVideo()
     const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptors().withFaceExpressions().withAgeAndGender();
     dct = detections
   })
