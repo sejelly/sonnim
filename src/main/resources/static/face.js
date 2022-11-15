@@ -9,7 +9,7 @@ let captureBtn = document.getElementById('captureBtn')
 let imgURL;
 let dct;
 let lastImgName;
-function nameVideo(){       //video 파일 이름
+async function nameVideo(){       //video 파일 이름
     var today = new Date();
     var hours = ('0' + today.getHours()).slice(-2);
     var minutes = ('0' + today.getMinutes()).slice(-2);
@@ -18,25 +18,27 @@ function nameVideo(){       //video 파일 이름
     return "/display/"+timeString+".jpg"
 }
 async function sreenShot() {
-		html2canvas(captureDiv).then(function(canvas) {
-			myImg = imgURL.replace("data:image/png;base64,", "");
-			var today = new Date();
-            var hours = ('0' + today.getHours()).slice(-2);
-            var minutes = ('0' + today.getMinutes()).slice(-2);
-            var seconds = ('0' + today.getSeconds()).slice(-2);
-            var timeString = hours + '_' + minutes  + '_' + seconds;
-			const result = $.ajax({
-				type : "POST",
-				data : {
-					"imgSrc" : myImg,
-					"fileName": timeString
-				},
-				dataType : "text",
-				url : "/ImgSaveTest.do",
-			});
-			return result;
-		});
-
+		canvas = await html2canvas(captureDiv)
+        myImg = imgURL.replace("data:image/png;base64,", "");
+        var today = new Date();
+        var hours = ('0' + today.getHours()).slice(-2);
+        var minutes = ('0' + today.getMinutes()).slice(-2);
+        var seconds = ('0' + today.getSeconds()).slice(-2);
+        var timeString = hours + '_' + minutes  + '_' + seconds;
+        function postAjax(){
+            return $.ajax({
+                type : "POST",
+                data : {
+                    "imgSrc" : myImg,
+                    "fileName": timeString
+                },
+                dataType : "text",
+                url : "/ImgSaveTest.do",
+            });
+        }
+		result= await postAjax()
+        lastImgName=await nameVideo()
+	    return result
 }
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -71,9 +73,19 @@ async function start() {
   captureBtn.addEventListener('click', async () => {
     takePhoto()
     await sreenShot()
-    image = await faceapi.fetchImage(nameVideo())
-    const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptors().withFaceExpressions().withAgeAndGender();
+    image = await faceapi.fetchImage(lastImgName)
+    const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor().withFaceExpressions().withAgeAndGender();
     dct = detections
+    console.log(dct)
+    if (detections){
+        const bestMatch = faceMatcher.findBestMatch(detections.descriptor)
+        if (bestMatch.label=='seyoung')
+            alert('주의 인물이 감지되었습니다')
+        else
+            alert("입장 가능합니다")
+    }
+    else
+        alert("얼굴이 감지되지 않았습니다")
   })
 }
 async function sleep(ms) {
