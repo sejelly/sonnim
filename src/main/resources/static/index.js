@@ -1,6 +1,6 @@
 function mode1()  {
-    location.href='/face.html'
+    location.href='/face'
 }
 function mode2()  {
-    location.href='/personal.html'
+    location.href='/personal'
 }

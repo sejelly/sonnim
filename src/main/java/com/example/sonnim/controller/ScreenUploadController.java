@@ -1,6 +1,7 @@
 package com.example.sonnim.controller;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +21,8 @@ import static org.hibernate.bytecode.enhance.spi.interceptor.BytecodeInterceptor
 
 @Controller
 public class ScreenUploadController {
+    @Value("${source.route}")
+    private String route;
     @ResponseBody
     @RequestMapping(value = "/ImgSaveTest.do" , method = RequestMethod.POST)
     public ModelMap ImgSaveTest(@RequestParam HashMap<Object, Object> param, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -34,7 +37,7 @@ public class ScreenUploadController {
             binaryData = binaryData.replaceAll("data:image/jpg;base64,", "");
             byte[] file = Base64.decodeBase64(binaryData);
             String fileName=  request.getParameter("fileName");
-            stream = new FileOutputStream("C:\\capture\\"+fileName+".jpg");
+            stream = new FileOutputStream(route+fileName+".jpg");
             stream.write(file);
             stream.close();
             System.out.println("캡처 저장");

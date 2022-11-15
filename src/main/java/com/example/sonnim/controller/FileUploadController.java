@@ -1,5 +1,6 @@
 package com.example.sonnim.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import java.io.File;
 
 @Controller
 public class FileUploadController {
+    @Value("${source.route}")
+    private String route;
     @GetMapping("/index")
     public String hello() {
         return "uploader";
@@ -21,7 +24,7 @@ public class FileUploadController {
 
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo( new File("C:\\capture\\" + fileName));
+            file.transferTo( new File(route + fileName));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
