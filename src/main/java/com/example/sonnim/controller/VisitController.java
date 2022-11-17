@@ -40,11 +40,11 @@ public class VisitController {
         }
     }
 
-    @PostMapping("insert")
-    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect) {//Integer과 int 비교
+    @RequestMapping(value="/insert",method=RequestMethod.POST)
+    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect, @RequestParam(value="age") Integer age, @RequestParam(value="gender") String gender) {//Integer과 int 비교
 
          {
-            Visit visit = Visit.builder().imgPath(img_path).suspect(suspect).build();
+            Visit visit = Visit.builder().imgPath(img_path).suspect(suspect).age(age).gender(gender).build();
             visitRepository.save(visit);
             return "이미지: " +img_path+ " suspect : " + suspect + "으로 추가 되었습니다";
         }

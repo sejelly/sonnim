@@ -77,6 +77,7 @@ async function start() {
     const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor().withFaceExpressions().withAgeAndGender();
     dct = detections
     console.log(dct)
+    insertDb(dct.age,dct.gender)
     if (detections){
         const bestMatch = faceMatcher.findBestMatch(detections.descriptor)
         if (bestMatch.label=='seyoung')
@@ -133,7 +134,11 @@ function makeDivToImageFile(captureDiv) {
     }).catch(function (err) {
         console.log(err);
     });
-
-
-
+}
+function insertDb( age, gender){
+    $.ajax({
+        type : "POST",
+        dataType : "text",
+        url : "/visit/insert?img_path="+lastImgName+"&age="+parseInt(age)+"&gender="+gender+"&suspect=0"
+    });
 }

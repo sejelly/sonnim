@@ -3,6 +3,7 @@ package com.example.sonnim.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table
@@ -21,7 +22,7 @@ public class Visit {
     @Column(length=50, nullable = true)
     private String gender;
     @Column(length=24, nullable = true)
-    private Integer visitedTime;
+    private Date visitedTime;
     @Column(nullable = true)
     private Boolean suspect;
     @Column(length=100, nullable = true)
