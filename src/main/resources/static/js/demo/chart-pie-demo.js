@@ -2,7 +2,21 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-// Pie Chart Example
+// Pie Chart Example-연령대 통계
+async function fetch10() {
+  let response = await fetch('/chart/searchParamAge?age=1')
+.then((response) => response.json())
+      .then((data) => console.log(data));
+
+
+
+
+
+  if (response.status == 200) {
+    alert("File successfully uploaded.");
+  }
+
+}
 var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
