@@ -56,9 +56,8 @@ public class VisitController {
     }
 
     @GetMapping("searchParam")
-    public String searchParamMember(@RequestParam(value = "suspect") Boolean suspect) {
+    public String searchParamMember() {
         List resultList = entityManager.createQuery("select v.imgPath from Visit v where v.suspect = :trueSuspect")
-                .setParameter("trueSuspect", suspect)
                 .getResultList();
         return resultList.toString();
     }

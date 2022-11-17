@@ -1,5 +1,6 @@
 package com.example.sonnim.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+    @Value("${source.route}")
+    private String route;
     @GetMapping("/")
     public String home(){
         System.out.println("Home");
@@ -27,7 +30,7 @@ public class HomeController {
     @ResponseBody
     public List<String> getDir(Model model){
         List<String> ret=new ArrayList<String>();
-        String data_dir = "C:\\capture\\";
+        String data_dir = route;
         File dir = new File(data_dir);
         for (String filename:dir.list()){
             ret.add(filename);
