@@ -40,18 +40,17 @@ async function uploadFile() {
   }
   console.log(fileupload.files[0])
 }
-
-// async function uploadFile() {
-//   let response = await fetch('/visit/searchParam?suspect=true')
-// .then((response) => response.json())
-//       .then((data) => console.log(data));
-//
-//
-//
-//
-//
-//   if (response.status == 200) {
-//     alert("File successfully uploaded.");
-//   }
-//
-// }
+function getDir(){
+    $.ajax({
+        url:"getDir",
+        type: 'post',
+        data:{
+        },
+        success: function(data){
+            console.log(data);
+        },
+        error: function(){
+            alert('error');
+        }
+    })
+}
