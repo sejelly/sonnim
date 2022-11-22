@@ -136,8 +136,10 @@ function makeDivToImageFile(captureDiv) {
     });
 }
 function insertDb( age, gender){
+    // let timestamp = Math.floor(+ new Date() / 1000);
+    // "&visited_time="+timestamp+
     $.ajax({
-        type : "POST",
+        type : "GET",
         dataType : "text",
         url : "/visit/insert?img_path="+lastImgName+"&age="+parseInt(age)+"&gender="+gender+"&suspect=0"
     });

@@ -3,47 +3,90 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example-연령대 통계
-async function fetch10() {
-  let response = await fetch('/chart/searchParamAge?age=1')
-.then((response) => response.json())
-      .then((data) => console.log(data));
+var ten=10;
+var twenty=5;
+var thirty=70;
 
-
-
-
-
-  if (response.status == 200) {
-    alert("File successfully uploaded.");
-  }
-
+function callAjax1() {
+  return $.ajax({
+    type : "GET",
+    data : {},
+    dataType : "text",
+    url : "/chart/searchParamAge?age=10",
+    success: function(data){
+      ten=parseInt(data);
+      console.log(data)
+    },
+    error: function(err){
+      console.log(err);
+    }
+  });
 }
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
-  data: {
-    labels: ["Direct", "Referral", "Social"],
-    datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-      hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
+function callAjax2() {
+  return $.ajax({
+    type : "GET",
+    data : {},
+    dataType : "text",
+    url : "/chart/searchParamAge?age=20",
+    success: function(data){
+      twenty=parseInt(data);
+      console.log(data)
     },
-    legend: {
-      display: false
+    error: function(err){
+      console.log(err);
+    }
+  });
+}
+function callAjax3() {
+  return $.ajax({
+    type : "GET",
+    data : {},
+    dataType : "text",
+    url : "/chart/searchParamAge?age=30",
+    success: function(data){
+      thirty=parseInt(data);
+      console.log(data)
     },
-    cutoutPercentage: 80,
-  },
-});
+    error: function(err){
+      console.log(err);
+    }
+  });
+}
+
+var myPieChart;
+var ctx;
+Promise.all([
+    callAjax1(),callAjax2(),callAjax3()
+]).then(start)
+function start() {
+  ctx=document.getElementById("myPieChart");
+  myPieChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ["10대", "20대", "30대"],
+      datasets: [{
+        data: [ten, twenty, thirty],
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
+      }],
+    },
+    options: {
+      maintainAspectRatio: false,
+      tooltips: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyFontColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        xPadding: 15,
+        yPadding: 15,
+        displayColors: false,
+        caretPadding: 10,
+      },
+      legend: {
+        display: false
+      },
+      cutoutPercentage: 80,
+    },
+  });
+}

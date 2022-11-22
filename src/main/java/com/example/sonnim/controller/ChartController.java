@@ -27,7 +27,7 @@ public class ChartController {
     }
     @GetMapping("searchParamAge")
     public int searchParamAge(@RequestParam(value = "age") Integer age) {
-        List resultList = entityManager.createQuery("select v from Visit v where v.age = :trueAge")
+        List resultList = entityManager.createQuery("select v from Visit v where v.age >= :trueAge and v.age < :trueAge+10")
                 .setParameter("trueAge", age)
                 .getResultList();
         return resultList.size();

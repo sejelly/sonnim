@@ -40,7 +40,7 @@ public class VisitController {
         }
     }
 
-    @RequestMapping(value="/insert",method=RequestMethod.POST)
+    @GetMapping(value="insert")
     public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect, @RequestParam(value="age") Integer age, @RequestParam(value="gender") String gender) {//Integer과 int 비교
 
          {
