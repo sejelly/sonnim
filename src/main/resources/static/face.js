@@ -77,13 +77,17 @@ async function start() {
     const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor().withFaceExpressions().withAgeAndGender();
     dct = detections
     console.log(dct)
-    insertDb(dct.age,dct.gender)
+
     if (detections){
         const bestMatch = faceMatcher.findBestMatch(detections.descriptor)
-        if (bestMatch.label=='seyoung')
+        if (bestMatch.label=='seyoung') {
             alert('주의 인물이 감지되었습니다')
-        else
+            insertSuspect(dct.age, dct.gender)
+        }
+        else {
             alert("입장 가능합니다")
+            insertInnoscent(dct.age, dct.gender)
+        }
     }
     else
         alert("얼굴이 감지되지 않았습니다")
@@ -135,12 +139,20 @@ function makeDivToImageFile(captureDiv) {
         console.log(err);
     });
 }
-function insertDb( age, gender){
-    // let timestamp = Math.floor(+ new Date() / 1000);
-    // "&visited_time="+timestamp+
+function insertInnoscent( age, gender){
+
     $.ajax({
         type : "GET",
         dataType : "text",
         url : "/visit/insert?img_path="+lastImgName+"&age="+parseInt(age)+"&gender="+gender+"&suspect=0"
+    });
+}
+
+function insertSuspect( age, gender){
+
+    $.ajax({
+        type : "GET",
+        dataType : "text",
+        url : "/visit/insert?img_path="+lastImgName+"&age="+parseInt(age)+"&gender="+gender+"&suspect=1"
     });
 }
