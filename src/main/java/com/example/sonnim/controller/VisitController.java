@@ -61,17 +61,29 @@ public class VisitController {
         }
     }
 
+    @PostMapping(value="input")
+    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect) {//Integer과 int 비교
+
+        {
+
+
+            Visit visit = Visit.builder().imgPath(img_path).suspect(suspect).age(0).gender("none").visitedTime(null).build();
+            visitRepository.save(visit);
+            return "이미지: " +img_path+ " suspect : " + suspect + "으로 추가 되었습니다";
+        }
+    }
+
     @GetMapping("search")
     public String searchAllMember() {
         return visitRepository.findAll().toString();
     }
 
-    @GetMapping("searchParam")
-    public String searchParamMember() {
+    @PostMapping("searchParam")
+    public List searchParamMember() {
         List resultList = entityManager.createQuery("select v.imgPath from Visit v where v.suspect = :trueSuspect")
                 .setParameter("trueSuspect", true)
                 .getResultList();
-        return resultList.toString();
+        return resultList;
     }
 //
 //    @GetMapping("searchImg")

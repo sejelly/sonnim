@@ -159,9 +159,13 @@ function insertSuspect( age, gender){
 function searchSuspect(){
 
     $.ajax({
-        type : "GET",
+        type : "POST",
         dataType : "json",
-        url : "/visit/searchParam?suspect=1"
+        url : "/visit/searchParam?suspect=1",
+        success: function(data){
+            console.log(data)
+        }
+
     });
 
     // $.ajax({ //jquery ajax
