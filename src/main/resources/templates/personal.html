@@ -78,6 +78,26 @@
                             시간대별 전체 방문자 통계
                         </div>
                     </div>
+                    <!-- Image Input -->
+
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">이미지 등록</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-input pt-4">
+                                    <img id="previewImg" width="200px" alt="이미지 영역" />
+                                </div>
+                                <p></p>
+                                <!--                        <hr>-->
+                                <!--                        <input type="file" id="fileUpload" accept="image/*" >-->
+                                <input id="fileupload" type="file" name="fileupload" multiple="multiple"/>
+                                <p></p>
+                                <button type="button" id="upload-button" class="btn btn-secondary" onclick="uploadFile()"> Upload </button>
+                            </div>
+                        </div>
 
                 </div>
 
@@ -97,31 +117,40 @@
                             방문 연령대 통계
                         </div>
                     </div>
-                </div>
-
-
-            </div>
-            <!-- Image Input -->
-            <div class="col-xl-4 col-lg-5">
-                <div class="card shadow mb-4">
-                    <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">이미지 등록</h6>
-                    </div>
-                    <!-- Card Body -->
-                    <div class="card-body">
-                        <div class="chart-input pt-4">
-                            <img id="previewImg" width="200px" alt="이미지 영역" />
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">방문 인원 확인</h6>
                         </div>
-                        <p></p>
-<!--                        <hr>-->
-<!--                        <input type="file" id="fileUpload" accept="image/*" >-->
-                        <input id="fileupload" type="file" name="fileupload" multiple="multiple"/>
-                        <p></p>
-                        <button type="button" id="upload-button" class="btn btn-secondary" onclick="uploadFile()"> Upload </button>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-input pt-4">
+                                <table class="table" style="font-size: 6px">
+                                    <tbody>
+                                    <tr>
+
+                                        <th>추정 나이</th>
+                                        <th>성별</th>
+                                        <th>출입 당시 화면</th>
+                                        <th>주의 인물</th>
+                                        <th>방문 시간</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p></p>
+
+                        </div>
                     </div>
                 </div>
+
+
             </div>
+
+
+
+        </div>
+
         </div>
         <!-- /.container-fluid -->
 
@@ -146,6 +175,51 @@
 <script src="js/demo/chart-pie-demo.js"></script>
 <script src="js/demo/chart-bar-demo.js"></script>
 <script src="personal.js"></script>
+<script>
+    tableDisplay();
+    function tableDisplay() {
+        $.ajax({
+            type: "GET",
+            data : {},
+            url: "/chart/searchData",
+            dataType: "json",
+            success: function(data) {
 
+                if(data.length==0){
+                    $(".table>tbody").append("<tr><td colspan='5'>검색된 정보가 없습니다.</td></tr>");
+                }else{
+                    $(data).each(function(i) {
+                        if (data[i]['visitedTime']==null){
+                            return;
+                        }
+                        var suspect= data[i]['suspect'];
+                        var datetime = new Date(data[i]['visitedTime'])
+                        if(suspect==1){
+                          suspect="O";
+                        }else{
+                            suspect="X";
+                        }
+
+                        var storeAdd = "<tr>"+
+                            "<td>"+data[i]['age']+"</td>"+
+                            "<td>"+data[i]['gender']+"</td>"+
+                            "<td>"+data[i]['imgPath']+"</td>"+
+                            "<td>"+suspect+"</td>"+
+                            "<td>"+datetime+"</td>"+
+
+                            "</tr>";
+                        $(".table>tbody").append(storeAdd);
+                    })
+
+                }
+
+            },
+
+            error: function(xhr) {
+                alert("에러코드 = "+xhr.status);
+            }
+        });
+    }
+</script>
 </body>
 </html>

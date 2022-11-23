@@ -39,10 +39,10 @@ async function uploadFile() {
 
 
   if (response.status == 200) {
-    alert("File successfully uploaded.");
+    alert("사진이 등록됩니다");
   }
   if (res.status == 200) {
-    alert("db successfully uploaded.");
+    alert("등록완료");
   }
   console.log(fileupload.files[0])
 }
