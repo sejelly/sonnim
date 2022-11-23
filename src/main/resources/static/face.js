@@ -70,6 +70,7 @@ async function start() {
   let image
   let canvas
   console.log('Loaded')
+  alert("얼굴 인식 사용가능")
   captureBtn.addEventListener('click', async () => {
     takePhoto()
     await sreenShot()
