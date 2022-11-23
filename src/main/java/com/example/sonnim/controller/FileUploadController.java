@@ -20,7 +20,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file ) {
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("file2") MultipartFile file2 ) {
 
         String fileName = file.getOriginalFilename();
         try {

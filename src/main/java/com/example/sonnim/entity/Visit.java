@@ -20,6 +20,8 @@ public class Visit {
     @Column(length=500, nullable = true)
     private String imgPath;
     @Column(length=50, nullable = true)
+    private String imgPath2;
+    @Column(length=50, nullable = true)
     private String gender;
     @Column(length=24, nullable = true)
     private Date visitedTime;
