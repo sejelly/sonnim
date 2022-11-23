@@ -1,7 +1,59 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
-
+var one1=1;
+var two1=1;
+var three1=1;
+var four1=1;
+var five1=1;
+var six1=1;
+function callAjax6() {
+  return $.ajax({
+    type : "GET",
+    data : {},
+    dataType : "json",
+    url : "/chart/searchData",
+    success: function(data){
+      console.log(data);
+      var list1 = [0,0,0,0,0,0]
+      for (var i =0; i<data.length;i++){
+        var date = new Date(data[i]['visitedTime'])
+        console.log(date)
+        var hour = date.getHours();
+        console.log(hour)
+        if (data[i]['gender']!='female'){
+          continue
+        }
+        if (data[i]['visitedTime']==null){
+          continue
+        }
+        if(hour<4){
+          list1[0]+=1
+        }
+        else if(hour<8){
+          list1[1]+=1
+        }
+        else if(hour<12){
+          list1[2]+=1
+        }
+        else if(hour<16){
+          list1[3]+=1
+        }
+        else if(hour<20){
+          list1[4]+=1
+        }
+        else {
+          list1[5]+=1
+        }
+      }
+      one1=list1[0]
+      two1=list1[1]
+      three1=list1[2]
+      four1=list1[3]
+      five1=list1[4]
+      six1=list1[5]
+    }});
+}
 function number_format(number, decimals, dec_point, thousands_sep) {
   // *     example: number_format(1234.56, 2, ',', ' ');
   // *     return: '1 234,56'
@@ -28,13 +80,17 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 // Area Chart Example
-var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
+var ctx2 = document.getElementById("myAreaChart");
+Promise.all([
+  callAjax6()
+]).then(start1)
+function start1(){
+var myLineChart = new Chart(ctx2, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["0-4시", "4-8시", "8-12시", "12-16시", "16-20시", "20-24시"],
     datasets: [{
-      label: "Earnings",
+      label: "여성 방문자 수",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
@@ -46,7 +102,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+      data: [one1, two1, three1, four1, five1, six1],
     }],
   },
   options: {
@@ -78,7 +134,7 @@ var myLineChart = new Chart(ctx, {
           padding: 10,
           // Include a dollar sign in the ticks
           callback: function(value, index, values) {
-            return '$' + number_format(value);
+            return number_format(value)+'명';
           }
         },
         gridLines: {
@@ -110,9 +166,9 @@ var myLineChart = new Chart(ctx, {
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+          return datasetLabel  + number_format(tooltipItem.yLabel)+'명';
         }
       }
     }
   }
-});
+});}

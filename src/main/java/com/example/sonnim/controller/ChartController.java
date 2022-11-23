@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 
@@ -42,13 +43,11 @@ public class ChartController {
     }
 
 
-    @GetMapping("searchParamVisitedTime")
-    public int searchParamVisitedTime(@RequestParam(value = "visited_time") Integer visitedTime) {
-        List resultList = entityManager.createQuery("select v from Visit v where v.visitedTime = :trueVisitedTime")
-                .setParameter("trueVisitedTime", visitedTime)
-                .getResultList();
-        return resultList.size();
+    @GetMapping("searchData")
+    public List<Visit> searchAll() {
+        return visitRepository.findAll();
     }
+
 //    @GetMapping("searchParamAge")
 //    public String searchParamAge(@RequestParam(value = "age") Integer age) {
 //        List resultList = entityManager.createQuery("select v from Visit v where v.age = :trueAge")

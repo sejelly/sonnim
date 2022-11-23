@@ -50,8 +50,9 @@ public class VisitController {
     public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect, @RequestParam(value="age") Integer age,  @RequestParam(value="gender") String gender) {//Integer과 int 비교
 
          {
-            var offset = 1000 * 60 * 60 * 9;
-            var koreaNow = new Date((new Date()).getTime() + offset);
+//            var offset = 1000 * 60 * 60 * 9;
+//             var koreaNow = new Date((new Date()).getTime() + offset);
+             var koreaNow = new Date((new Date()).getTime() );
 
              Date visited_time = koreaNow;
 
@@ -62,11 +63,9 @@ public class VisitController {
     }
 
     @PostMapping(value="input")
-    public String insertMember(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect) {//Integer과 int 비교
+    public String insertInput(@RequestParam(value = "img_path") String img_path, @RequestParam(value = "suspect") Boolean suspect) {//Integer과 int 비교
 
         {
-
-
             Visit visit = Visit.builder().imgPath(img_path).suspect(suspect).age(0).gender("none").visitedTime(null).build();
             visitRepository.save(visit);
             return "이미지: " +img_path+ " suspect : " + suspect + "으로 추가 되었습니다";
@@ -79,7 +78,7 @@ public class VisitController {
     }
 
     @PostMapping("searchParam")
-    public List searchParamMember() {
+    public List searchParamMember(@RequestParam(value = "suspect")boolean suspect) {
         List resultList = entityManager.createQuery("select v.imgPath from Visit v where v.suspect = :trueSuspect")
                 .setParameter("trueSuspect", true)
                 .getResultList();

@@ -29,7 +29,7 @@ async function uploadFile() {
   });
 
 
-    let path = "C:__capture__" + fileupload.files[0].name;
+    let path = "/display/" + fileupload.files[0].name;
     console.log(path);
     let res = await fetch('/visit/input?img_path='+path+'&suspect=true', {
       method: "POST",

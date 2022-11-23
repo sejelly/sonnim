@@ -48,25 +48,25 @@ function dataURLtoBlob(dataurl) {
     }
     return new Blob([u8arr], {type:mime});
 }
-function loadLabeledImages() {              //사진을 통해 학습시킴
-  const labels = ['seyoung']
+var labels
+async function loadLabeledImages() {              //사진을 통해 학습시킴
+  labels = await searchSuspect()
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
       var path = window.location.pathname;
-      console.log
-      for (let i = 1; i <= 2; i++) {
-        const img = await faceapi.fetchImage(`/labeled_images/${label}/${i}.jpg`)
+
+        const img = await faceapi.fetchImage(`${label}`)
         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
         descriptions.push(detections.descriptor)
-      }
+
       return new faceapi.LabeledFaceDescriptors(label, descriptions)
     })
   )
 }
 async function start() {
   const labeledFaceDescriptors = await loadLabeledImages()
-  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5)
+  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.45)
   let image
   let canvas
   console.log('Loaded')
@@ -80,14 +80,17 @@ async function start() {
 
     if (detections){
         const bestMatch = faceMatcher.findBestMatch(detections.descriptor)
-        if (bestMatch.label=='seyoung') {
-            alert('주의 인물이 감지되었습니다')
-            insertSuspect(dct.age, dct.gender)
+        console.log(bestMatch)
+        for (var i in labels) {
+            if (bestMatch.label == labels[i]) {
+                alert('주의 인물이 감지되었습니다')
+                insertSuspect(dct.age, dct.gender)
+                return
+            }
         }
-        else {
-            alert("입장 가능합니다")
-            insertInnoscent(dct.age, dct.gender)
-        }
+        alert("입장 가능합니다")
+        insertInnoscent(dct.age, dct.gender)
+
     }
     else
         alert("얼굴이 감지되지 않았습니다")
@@ -156,18 +159,19 @@ function insertSuspect( age, gender){
         url : "/visit/insert?img_path="+lastImgName+"&age="+parseInt(age)+"&gender="+gender+"&suspect=1"
     });
 }
-function searchSuspect(){
-
-    $.ajax({
+async function searchSuspect(){
+    var list;
+    await $.ajax({
         type : "POST",
         dataType : "json",
         url : "/visit/searchParam?suspect=1",
         success: function(data){
             console.log(data)
+            list=data;
         }
 
     });
-
+    return list;
     // $.ajax({ //jquery ajax
     //     type:"get", //get방식으로 가져오기
     //     url:"/visit/searchParam?suspect=1", //값을 가져올 경로

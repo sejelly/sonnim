@@ -6,7 +6,7 @@ Chart.defaults.global.defaultFontColor = '#858796';
 var ten=10;
 var twenty=5;
 var thirty=70;
-
+var forty=20;
 function callAjax1() {
   return $.ajax({
     type : "GET",
@@ -52,22 +52,37 @@ function callAjax3() {
     }
   });
 }
+function callAjax4() {
+  return $.ajax({
+    type : "GET",
+    data : {},
+    dataType : "text",
+    url : "/chart/searchParamAge?age=40",
+    success: function(data){
+      forty=parseInt(data);
+      console.log(data)
+    },
+    error: function(err){
+      console.log(err);
+    }
+  });
+}
 
 var myPieChart;
 var ctx;
 Promise.all([
-    callAjax1(),callAjax2(),callAjax3()
+    callAjax1(),callAjax2(),callAjax3(),callAjax4()
 ]).then(start)
 function start() {
   ctx=document.getElementById("myPieChart");
   myPieChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ["10대", "20대", "30대"],
+      labels: ["10대", "20대", "30대","40대"],
       datasets: [{
-        data: [ten, twenty, thirty],
-        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+        data: [ten, twenty, thirty,forty],
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#ffdb9b'],
+        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf','#ffa800'],
         hoverBorderColor: "rgba(234, 236, 244, 1)",
       }],
     },
